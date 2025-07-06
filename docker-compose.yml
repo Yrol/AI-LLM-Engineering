@@ -3,17 +3,18 @@ version: "3.8"
 services:
   backend:
     build:
-      context: .
-      dockerfile: docker/backend/Dockerfile
+      context: ./backend
+      dockerfile: ../docker/backend/Dockerfile
     container_name: backend_service
     restart: unless-stopped
     volumes:
-      - .:/app
+      - ./backend:/app
     ports:
       - "8000:8000"
     environment:
       - DEBUG=True
       - DJANGO_SETTINGS_MODULE=backend.settings
+    working_dir: /app
     depends_on:
       - db
 
