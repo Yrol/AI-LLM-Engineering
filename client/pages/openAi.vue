@@ -1,0 +1,177 @@
+<script setup>
+import { ref, watch } from 'vue'
+import BaseTextarea from '~/components/BaseTextarea.vue'
+import LoadingButton from '~/components/LoadingButton.vue'
+import TypingEffect from '~/components/TypingEffect.vue'
+
+const webSummerizerSystemPrompt = ref('')
+const webSummerizerUserPrompt = ref('')
+const webSummerizerUrl = ref('')
+const webSummerizerResponseMessage = ref('')
+const webSummerizerErrorMessage = ref('')
+const systemPromptError = ref('')
+const userPromptError = ref('')
+const webSummerizerUrlError = ref('')
+const webSummerizerLoading = ref(false)
+
+const askAnythingPrompt = ref('')
+const askAnythingPromptError = ref('')
+const askAnythingLoading = ref(false)
+const askAnythingResponseMessage = ref('')
+const askAnythingTypingText = ref('')
+const askAnythingErrorMessage = ref('')
+
+
+// Watch for changes to the response and start typing animation
+watch(askAnythingResponseMessage, async (newMessage) => {
+  askAnythingTypingText.value = ''
+  if (!newMessage) return
+
+  for (let i = 0; i <= newMessage.length; i++) {
+    askAnythingTypingText.value = newMessage.slice(0, i)
+    await new Promise(res => setTimeout(res, 30))
+  }
+})
+
+async function handleSubmitAskAnything() {
+  askAnythingPromptError.value = ''
+
+  // Validation
+  let valid = true
+  if (!askAnythingPrompt.value.trim()) {
+    askAnythingPromptError.value = 'Prompt is required'
+    valid = false
+  }
+
+  if (!valid) return
+
+  askAnythingLoading.value = true
+
+  try {
+    const res = await fetch('http://localhost:8000/api/askanything/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        message: askAnythingPrompt.value,
+      })
+    })
+    if (!res.ok) throw new Error('API error')
+    const data = await res.json()
+    askAnythingResponseMessage.value = data.response
+    askAnythingPrompt.value = ''
+
+  } catch (err) {
+    askAnythingErrorMessage.value = 'Failed to connect to API.'
+  } finally {
+    askAnythingLoading.value = false
+  }
+}
+
+async function handleSubmitWebSummerizer() {
+  // Reset errors
+  systemPromptError.value = ''
+  userPromptError.value = ''
+  webSummerizerUrlError.value = ''
+
+  webSummerizerResponseMessage.value = ''
+  webSummerizerErrorMessage.value = ''
+
+  // Validation
+  let valid = true
+  if (!webSummerizerSystemPrompt.value.trim()) {
+    systemPromptError.value = 'System Prompt is required.'
+    valid = false
+  }
+  if (!webSummerizerUserPrompt.value.trim()) {
+    userPromptError.value = 'User prompt is required.'
+    valid = false
+  }
+  if (!webSummerizerUrl.value.trim()) {
+    webSummerizerUrlError.value = 'URL is required.'
+    valid = false
+  }
+
+  if (!valid) return
+
+  webSummerizerLoading.value = true
+
+  try {
+    const res = await fetch('http://localhost:8000/api/websummarizer/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        systemInput: webSummerizerSystemPrompt.value,
+        userInput: webSummerizerUserPrompt.value,
+        website: webSummerizerUrl.value
+      })
+    })
+    if (!res.ok) throw new Error('API error')
+    const data = await res.json()
+    webSummerizerResponseMessage.value = data.message
+
+    webSummerizerSystemPrompt.value = ''
+    webSummerizerUserPrompt.value = ''
+    webSummerizerUrl.value = ''
+
+  } catch (err) {
+    webSummerizerErrorMessage.value = 'Failed to connect to API.'
+  } finally {
+    webSummerizerLoading.value = false
+  }
+}
+</script>
+
+<template>
+  <div class="w-full max-w-2xl mx-auto">
+    <h2 class="text-xl font-semibold mb-4">OpenAI Experiment</h2>
+
+    <section>
+      <h3 class="text-lg font-bold mb-4 border-b pb-2">Ask Anything</h3>
+      <form @submit.prevent="handleSubmitAskAnything" class="w-full max-w-2xl mx-auto p-6 bg-white rounded shadow">
+        <BaseTextarea id="ask-anything-textarea" label="Ask anything" v-model="askAnythingPrompt"
+          placeholder="Type your prompt here..." :rows="6" help="Max 500 characters" class="mb-1" />
+        <div v-if="askAnythingPromptError" class="text-red-600 text-sm mb-3">{{ askAnythingPromptError }}</div>
+
+        <LoadingButton type="submit" :loading="askAnythingLoading">
+          <template #loading>
+            Sending...
+          </template>
+          Send
+        </LoadingButton>
+        <TypingEffect :message="askAnythingResponseMessage" color-class="text-blue-600" :speed="20" />
+        <div v-if="askAnythingErrorMessage" class="mt-4 text-red-600">
+          {{ askAnythingErrorMessage }}
+        </div>
+      </form>
+    </section>
+
+    <section class="mt-8">
+      <h3 class="text-lg font-bold mb-4 border-b pb-2">Web Summarizer</h3>
+      <form @submit.prevent="handleSubmitWebSummerizer" class="w-full max-w-2xl mx-auto p-6 bg-white rounded shadow">
+
+        <BaseInput id="summarizer-title" label="URL" v-model="webSummerizerUrl" placeholder="Enter the URL"
+          class="mb-3" />
+        <div v-if="webSummerizerUrlError" class="text-red-600 text-sm mb-3">{{ webSummerizerUrlError }}</div>
+
+        <BaseTextarea id="system-prompt-textarea" label="System Prompt" v-model="webSummerizerSystemPrompt"
+          placeholder="Type your System Prompt here..." :rows="6" help="Max 500 characters" class="mb-1" />
+        <div v-if="systemPromptError" class="text-red-600 text-sm mb-3">{{ systemPromptError }}</div>
+
+        <BaseTextarea id="user-prompt-textarea" label="User Prompt" v-model="webSummerizerUserPrompt"
+          placeholder="Type your User Prompt here..." :rows="6" help="Max 500 characters" class="mb-1" />
+        <div v-if="userPromptError" class="text-red-600 text-sm mb-3">{{ userPromptError }}</div>
+
+        <LoadingButton type="submit" :loading="webSummerizerLoading">
+          <template #loading>
+            Sending...
+          </template>
+          Send
+        </LoadingButton>
+        <TypingEffect :message="webSummerizerResponseMessage" color-class="text-blue-600" :speed="20" />
+        <div v-if="webSummerizerErrorMessage" class="mt-4 text-red-600">
+          {{ webSummerizerErrorMessage }}
+        </div>
+      </form>
+    </section>
+  </div>
+</template>
