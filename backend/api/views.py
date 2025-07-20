@@ -11,9 +11,8 @@ def web_summarizer(request):
         try:
             data = json.loads(request.body)
             systemInput = data.get('systemInput', '')
-            userInput = data.get('userInput', '')
             website = data.get('website', '')
-            return JsonResponse({'message': f'You sent: {summarise_web(systemInput, userInput, website)}'})
+            return JsonResponse({'message': f'{summarise_web(systemInput, website)}'})
         except ValueError as ve:
             return JsonResponse({'error': str(ve)}, status=400)
         except Exception as e:

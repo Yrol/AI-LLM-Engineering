@@ -3,7 +3,7 @@
     <label v-if="label" :for="id" class="block mb-1 font-medium text-gray-700">
       {{ label }}
     </label>
-    <textarea :id="id" :rows="rows" :placeholder="placeholder" :value="modelValue"
+    <textarea :id="id" :rows="rows" :disabled="disabled" :placeholder="placeholder" :value="modelValue"
       @input="$emit('update:modelValue', $event.target.value)"
       class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 transition"></textarea>
     <p v-if="help" class="mt-1 text-sm text-gray-500">{{ help }}</p>
@@ -15,6 +15,10 @@ defineProps({
   modelValue: {
     type: String,
     default: ''
+  },
+  disabled: {
+    type: Boolean,
+    default: false
   },
   label: {
     type: String,

@@ -4,8 +4,12 @@ import BaseTextarea from '~/components/BaseTextarea.vue'
 import LoadingButton from '~/components/LoadingButton.vue'
 import TypingEffect from '~/components/TypingEffect.vue'
 
-const webSummerizerSystemPrompt = ref('')
-const webSummerizerUserPrompt = ref('')
+const webSummerizerSystemPrompt = ref('You are an assistant that analyzes the contents of a website \
+and provides a short summary, ignoring text that might be navigation related. \
+Respond in markdown.')
+const webSummerizerUserPrompt = ref('You are looking at a website titled {website.title} \nThe contents of this website is as follows; \
+please provide a short summary of this website in markdown. \
+If it includes news or announcements, then summarize these too.\n\n')
 const webSummerizerUrl = ref('')
 const webSummerizerResponseMessage = ref('')
 const webSummerizerErrorMessage = ref('')
@@ -36,7 +40,6 @@ watch(askAnythingResponseMessage, async (newMessage) => {
 async function handleSubmitAskAnything() {
   askAnythingPromptError.value = ''
 
-  // Validation
   let valid = true
   if (!askAnythingPrompt.value.trim()) {
     askAnythingPromptError.value = 'Prompt is required'
@@ -58,7 +61,7 @@ async function handleSubmitAskAnything() {
     if (!res.ok) throw new Error('API error')
     const data = await res.json()
     askAnythingResponseMessage.value = data.response
-    askAnythingPrompt.value = ''
+    // askAnythingPrompt.value = ''
 
   } catch (err) {
     askAnythingErrorMessage.value = 'Failed to connect to API.'
@@ -82,10 +85,12 @@ async function handleSubmitWebSummerizer() {
     systemPromptError.value = 'System Prompt is required.'
     valid = false
   }
-  if (!webSummerizerUserPrompt.value.trim()) {
-    userPromptError.value = 'User prompt is required.'
+
+   if (!webSummerizerUserPrompt.value.trim()) {
+    userPromptError.value = 'User Prompt is required.'
     valid = false
   }
+
   if (!webSummerizerUrl.value.trim()) {
     webSummerizerUrlError.value = 'URL is required.'
     valid = false
@@ -101,7 +106,6 @@ async function handleSubmitWebSummerizer() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         systemInput: webSummerizerSystemPrompt.value,
-        userInput: webSummerizerUserPrompt.value,
         website: webSummerizerUrl.value
       })
     })
@@ -109,9 +113,8 @@ async function handleSubmitWebSummerizer() {
     const data = await res.json()
     webSummerizerResponseMessage.value = data.message
 
-    webSummerizerSystemPrompt.value = ''
-    webSummerizerUserPrompt.value = ''
-    webSummerizerUrl.value = ''
+    // webSummerizerSystemPrompt.value = ''
+    // webSummerizerUrl.value = ''
 
   } catch (err) {
     webSummerizerErrorMessage.value = 'Failed to connect to API.'
@@ -147,6 +150,9 @@ async function handleSubmitWebSummerizer() {
 
     <section class="mt-8">
       <h3 class="text-lg font-bold mb-4 border-b pb-2">Web Summarizer</h3>
+
+      <p class="p-4">A web summariser tool that uses a predefined System Prompt (set in the backend) along with a User Prompt. You may modify the User Prompt and experiment with different variations.</p>
+
       <form @submit.prevent="handleSubmitWebSummerizer" class="w-full max-w-2xl mx-auto p-6 bg-white rounded shadow">
 
         <BaseInput id="summarizer-title" label="URL" v-model="webSummerizerUrl" placeholder="Enter the URL"
@@ -157,8 +163,8 @@ async function handleSubmitWebSummerizer() {
           placeholder="Type your System Prompt here..." :rows="6" help="Max 500 characters" class="mb-1" />
         <div v-if="systemPromptError" class="text-red-600 text-sm mb-3">{{ systemPromptError }}</div>
 
-        <BaseTextarea id="user-prompt-textarea" label="User Prompt" v-model="webSummerizerUserPrompt"
-          placeholder="Type your User Prompt here..." :rows="6" help="Max 500 characters" class="mb-1" />
+        <BaseTextarea id="system-prompt-textarea" :disabled="true" disa label="System Prompt" v-model="webSummerizerUserPrompt"
+          placeholder="Type your System Prompt here..." :rows="6" help="Max 500 characters" class="mb-1" />
         <div v-if="userPromptError" class="text-red-600 text-sm mb-3">{{ userPromptError }}</div>
 
         <LoadingButton type="submit" :loading="webSummerizerLoading">
