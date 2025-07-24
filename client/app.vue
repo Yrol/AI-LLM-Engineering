@@ -10,6 +10,7 @@
       <aside class="w-64 bg-gray-100 border-r h-[calc(100vh-64px)] sticky top-0 flex flex-col">
         <nav class="flex flex-col gap-6 mt-10">
           <NuxtLink to="/openAi" class="text-lg text-blue-700 hover:underline text-center">OpenAI</NuxtLink>
+          <NuxtLink to="/ollama" class="text-lg text-blue-700 hover:underline text-center">Ollama</NuxtLink>
           <NuxtLink to="/about" class="text-lg text-blue-700 hover:underline text-center">About</NuxtLink>
         </nav>
       </aside>

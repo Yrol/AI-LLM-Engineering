@@ -1,4 +1,4 @@
-version: "3.8"
+version: "3.9"
 
 services:
   backend:
@@ -59,7 +59,20 @@ services:
     depends_on:
       - backend
       - client
+  
+  ollama:
+    build:
+      context: ./docker/ollama
+      dockerfile: Dockerfile
+    platform: linux/arm64
+    container_name: ollama_service
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    restart: unless-stopped
 
 volumes:
   postgres_data:
   node_modules:
+  ollama_data:
