@@ -1,9 +1,8 @@
-import requests
 import os
 from ..helper.website import Website
+from ..helper.validators import url_accessible, isStringEmpty
 from dotenv import load_dotenv
 from bs4 import BeautifulSoup
-from IPython.display import Markdown, display
 from openai import OpenAI
 from openai import AuthenticationError, OpenAIError
 
@@ -16,13 +15,17 @@ def summarise_web(systemInput, webUrl):
         raise ValueError(api_key_respose)
     if not url_accessible(webUrl):
         raise ValueError("Invalid website URL")
+    if isStringEmpty(systemInput):
+        raise ValueError("Invalid or empty System Input") 
     else:
         website = Website(webUrl)
         openai = OpenAI()
         response = openai.chat.completions.create(
-            model="gpt-4o-mini", messages=messages_for(website, systemInput)
+            model="gpt-4o-mini", 
+            messages=messages_for(website, systemInput)
         )
         return response.choices[0].message.content
+        
         
 def open_ai_ask_anything(message):
     api_key_respose = check_open_ai("OPENAI_API_KEY")
@@ -35,6 +38,7 @@ def open_ai_ask_anything(message):
             model="gpt-4o-mini", messages=[{"role": "user", "content": message}]
         )
         return response.choices[0].message.content
+
 
 def user_prompt_for(website):
     user_prompt = f"You are looking at a website titled {website.title}"
@@ -50,22 +54,6 @@ def messages_for(website, system_prompt):
         {"role": "system", "content": system_prompt},
         {"role": "user", "content": user_prompt_for(website)},
     ]
-
-
-def url_accessible(url):
-    headers = {
-        'User-Agent': (
-            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
-            "AppleWebKit/537.36 (KHTML, like Gecko) "
-            "Chrome/124.0.0.0 Safari/537.36"
-        )
-    }
-    try:
-        response = requests.get(url, headers=headers, timeout=5)
-        return response.ok and response.status_code == 200
-    except requests.RequestException as e:
-        print(f"Error: {e}")
-        return False
 
 
 def check_open_ai(keyName):
@@ -89,3 +77,4 @@ def check_open_ai(keyName):
         return f"API key check failed due to an OpenAI error: {str(e)}"
     except Exception as e:
         return f"Unexpected error while checking API key: {str(e)}"
+    

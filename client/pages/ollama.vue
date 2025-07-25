@@ -7,7 +7,7 @@ import TypingEffect from '~/components/TypingEffect.vue'
 const handleSubmitOllama = ref('')
 const model = ref('tinyllama')
 const role = ref('user')
-const content = ref('')
+const content = ref('Describe some of the business applications of Generative AI')
 const ollamaChatResponseMessage = ref('')
 
 const modelError = ref('')
@@ -46,7 +46,7 @@ async function handleSubmitOllamaAskAnything() {
   ollamaChatLoading.value = true
 
   try {
-    const res = await fetch('http://localhost:11434/api/chat', {
+    const res = await fetch('http://localhost:8000/api/ollamachat/', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
