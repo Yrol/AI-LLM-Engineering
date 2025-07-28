@@ -2,7 +2,7 @@ from django.http import JsonResponse
 
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
-from .services.open_ai_sevice import summarise_web, open_ai_ask_anything
+from .services.open_ai_service import summarise_web, open_ai_ask_anything
 from .services.ollama_service import ollama_ask_anything
 import json
 
