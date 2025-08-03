@@ -4,6 +4,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from .services.open_ai_service import summarise_web, open_ai_ask_anything
 from .services.ollama_service import ollama_ask_anything
+from .helper.constants import ALLOWED_METHODS, DEFAULT_METHOD
 import json
 
 @csrf_exempt
@@ -41,7 +42,9 @@ def ollama_chat(request):
             model = data.get('model', '')
             messages = data.get('messages', [])
             stream = data.get('stream', False)
-            return JsonResponse(ollama_ask_anything(model, messages, stream, data))
+            method_raw = data.get('method', '').lower()
+            method = method_raw if method_raw in ALLOWED_METHODS else DEFAULT_METHOD.value
+            return JsonResponse(ollama_ask_anything(model, messages, stream, data, method))
         except ValueError as ve:
             return JsonResponse({'error': str(ve)}, status=400)
         except Exception as e:
