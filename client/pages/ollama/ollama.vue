@@ -83,35 +83,35 @@ async function handleSubmitOllamaAskAnything() {
 }
 </script>
 
-
 <template>
   <div class="w-full max-w-2xl mx-auto">
-    <h2 class="text-xl font-semibold mb-4">Ollama Experiment</h2>
+    <section class="mt-8">
+      <h3 class="text-lg font-bold mb-4 border-b pb-2">Ollama Experiment</h3>
 
-    <form @submit.prevent="handleSubmitOllamaAskAnything" class="w-full max-w-2xl mx-auto p-6 bg-white rounded shadow">
-      <BaseInput id="model" label="Model" v-model="model" placeholder="Define the model" class="mb-3" />
-      <div v-if="modelError" class="text-red-600 text-sm mb-3">{{ modelError }}</div>
+      <form @submit.prevent="handleSubmitOllamaAskAnything"
+        class="w-full max-w-2xl mx-auto p-6 bg-white rounded shadow">
+        <BaseInput id="model" label="Model" v-model="model" placeholder="Define the model" class="mb-3" />
+        <div v-if="modelError" class="text-red-600 text-sm mb-3">{{ modelError }}</div>
 
-      <BaseInput id="role" label="Role" v-model="role" placeholder="Define the role" class="mb-3" />
-      <div v-if="rolelError" class="text-red-600 text-sm mb-3">{{ rolelError }}</div>
+        <BaseInput id="role" label="Role" v-model="role" placeholder="Define the role" class="mb-3" />
+        <div v-if="rolelError" class="text-red-600 text-sm mb-3">{{ rolelError }}</div>
 
-      <BaseTextarea id="content-textarea" label="Content" v-model="content" placeholder="Type your content here..."
-        :rows="6" help="Max 500 characters" class="mb-1" />
-      <div v-if="contentError" class="text-red-600 text-sm mb-3">{{ contentError }}</div>
+        <BaseTextarea id="content-textarea" label="Content" v-model="content" placeholder="Type your content here..."
+          :rows="6" help="Max 500 characters" class="mb-1" />
+        <div v-if="contentError" class="text-red-600 text-sm mb-3">{{ contentError }}</div>
 
-      <LoadingButton type="submit" :loading="ollamaChatLoading">
-        <template #loading>
-          Sending...
-        </template>
-        Send
-      </LoadingButton>
-      <TypingEffect :message="ollamaChatResponseMessage" color-class="text-blue-600" :speed="5" />
-      <div v-if="ollamaChatErrorMessage" class="mt-4 text-red-600">
-        {{ ollamaChatErrorMessage }}
-      </div>
-    </form>
+        <LoadingButton type="submit" :loading="ollamaChatLoading">
+          <template #loading>
+            Sending...
+          </template>
+          Send
+        </LoadingButton>
+        <TypingEffect :message="ollamaChatResponseMessage" color-class="text-blue-600" :speed="5" />
+        <div v-if="ollamaChatErrorMessage" class="mt-4 text-red-600">
+          {{ ollamaChatErrorMessage }}
+        </div>
+      </form>
 
-    <section>
     </section>
   </div>
 </template>

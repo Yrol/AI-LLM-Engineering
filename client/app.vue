@@ -1,23 +1,26 @@
 <template>
-  <div class="min-h-screen flex flex-col">
-    <!-- Header -->
-    <header class="bg-blue-600 text-white py-4 px-6 shadow w-full">
-      <h1 class="text-2xl font-bold">LLM Engineering</h1>
+  <div class="min-h-screen flex flex-col bg-gray-50">
+    <header class="bg-blue-600 text-white py-4 px-6 shadow">
+      <NuxtLink to="/" class="text-2xl font-bol">LLM Engineering</NuxtLink>
     </header>
-    <!-- Main Content Area: Sidebar + Page Content -->
-    <div class="flex flex-1">
-      <!-- Sidebar -->
-      <aside class="w-64 bg-gray-100 border-r h-[calc(100vh-64px)] sticky top-0 flex flex-col">
-        <nav class="flex flex-col gap-6 mt-10">
-          <NuxtLink to="/openAi" class="text-lg text-blue-700 hover:underline text-center">OpenAI</NuxtLink>
-          <NuxtLink to="/ollama" class="text-lg text-blue-700 hover:underline text-center">Ollama</NuxtLink>
-          <NuxtLink to="/about" class="text-lg text-blue-700 hover:underline text-center">About</NuxtLink>
-        </nav>
-      </aside>
+
+    <main class="flex-1 flex flex-row items-start justify-center">
+      <!-- Navigation -->
+      <nav class="w-64 min-h-screen bg-blue-50 flex flex-col gap-3 px-6 py-10">
+        <!-- OpenAI section with sub-items -->
+        <div>
+          <NuxtLink to="/openai/openai" class="text-lg text-blue-700 font-semibold hover:underline text-left">OpenAI</NuxtLink>
+          <div class="pl-4 flex flex-col gap-1 mt-1">
+            <NuxtLink to="/openai/askanything" class="text-base text-blue-600 hover:underline text-left">Ask anything</NuxtLink>
+            <NuxtLink to="/openai/websummeriser" class="text-base text-blue-600 hover:underline text-left">Web summerizer</NuxtLink>
+            <NuxtLink to="/openai/brochure" class="text-base text-blue-600 hover:underline text-left">Brochure</NuxtLink>
+          </div>
+        </div>
+        <NuxtLink to="/ollama/ollama" class="text-lg text-blue-700 hover:underline font-medium text-left mt-2">Ollama</NuxtLink>
+      </nav>
       <!-- Page Content -->
-      <main class="flex-1 flex flex-col items-center justify-center p-8">
-        <NuxtPage />
-      </main>
-    </div>
+      <NuxtPage />
+    </main>
   </div>
 </template>
+
