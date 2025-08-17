@@ -7,6 +7,7 @@ An experimental project featuring both backend and frontend functionality to int
 - **OpenAI**
     - Web summarizer (supports user and system prompts) - cloud based
     - Generic chat capabilities querying via API calls - cloud based
+    - Brochure generator - creates a brochure for a given website - cloud based
 - **Ollama (TinyLlama)**
     - Generic chat capabilities querying via API calls - local LLM
 

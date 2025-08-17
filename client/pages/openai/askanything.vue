@@ -5,7 +5,7 @@ import LoadingButton from '~/components/LoadingButton.vue'
 import TypingEffect from '~/components/TypingEffect.vue'
 
 
-const askAnythingPrompt = ref('')
+const askAnythingPrompt = ref('Describe some of the business applications of Generative AI?')
 const askAnythingPromptError = ref('')
 const askAnythingLoading = ref(false)
 const askAnythingResponseMessage = ref('')

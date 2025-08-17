@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from 'vue'
 import BaseTextarea from '~/components/BaseTextarea.vue'
+import BaseInput from '~/components/BaseInput.vue'
 import LoadingButton from '~/components/LoadingButton.vue'
 import TypingEffect from '~/components/TypingEffect.vue'
 
