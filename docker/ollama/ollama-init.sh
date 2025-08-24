@@ -13,7 +13,7 @@ until curl -sf http://localhost:11434/ >/dev/null; do
 done
 
 # pull model if missing
-MODEL_NAME="tinyllama"
+MODEL_NAME="mistral"
 if ! ollama list | grep -q "^${MODEL_NAME}"; then
   echo "Pulling ${MODEL_NAME}..."
   ollama pull ${MODEL_NAME}

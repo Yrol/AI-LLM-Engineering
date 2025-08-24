@@ -66,7 +66,7 @@ class OpenAIService:
         return link_system_prompt
 
 
-    def get_links_user_prompt(self, website:str):
+    def get_links_user_prompt(self, website:Website):
         user_prompt = f"Here is the list of links on the website of {website.url} - "
         user_prompt += "please decide which of these are relevant web links for a brochure about the company, respond with the full https URL in JSON format. \
     Do not include Terms of Service, Privacy, email links.\n"
@@ -82,18 +82,18 @@ class OpenAIService:
             messages=[
                 {"role": "system", "content": self.get_system_prompt_for_brochure()},
                 {"role": "user", "content": self.get_links_user_prompt(website)}
-        ],
+            ],
             response_format={"type": "json_object"}
         )
         result = response.choices[0].message.content
+        print(response)
         return json.loads(result)
-
 
     def get_all_details(self, url:str):
         result = "Landing page:\n"
         result += Website(url).get_contents()
         links = self.get_links(url)
-        print("Found links:", links)
+        # print("Found links:", links)
         for link in links["links"]:
             result += f"\n\n{link['type']}\n"
             result += Website(link["url"]).get_contents()
