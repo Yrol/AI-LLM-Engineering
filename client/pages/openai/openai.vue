@@ -12,8 +12,9 @@
         <ul class="space-y-4">
           <li>
             <ul class="list-disc list-inside pl-4 mt-1 space-y-1 text-gray-700">
-              <li>Web summarizer (supports user and system prompts) – cloud based</li>
-              <li>Generic chat capabilities querying via API calls – cloud based</li>
+              <li>Web summarizer (supports user and system prompts)</li>
+              <li>Generic chat capabilities querying via API calls</li>
+              <li>Creating web brochures (scanning content and links of a given website)</li>
             </ul>
           </li>
         </ul>
