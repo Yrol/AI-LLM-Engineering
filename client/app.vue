@@ -20,6 +20,7 @@
         <div class="pl-4 flex flex-col gap-1 mt-1">
             <NuxtLink to="/ollama/askanything" class="text-base text-blue-600 hover:underline text-left">Ask anything</NuxtLink>
             <NuxtLink to="/ollama/brochure" class="text-base text-blue-600 hover:underline text-left">Brochure</NuxtLink>
+            <NuxtLink to="/ollama/websummeriser" class="text-base text-blue-600 hover:underline text-left">Web summerizer</NuxtLink>
         </div>
       </nav>
       <!-- Page Content -->

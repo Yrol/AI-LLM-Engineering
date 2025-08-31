@@ -50,7 +50,7 @@ async function handleSubmitWebSummerizer() {
   webSummerizerLoading.value = true
 
   try {
-    const res = await fetch('http://localhost:8000/api/websummarizer/', {
+    const res = await fetch('http://localhost:8000/api/ollama_websummarizer/', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -87,10 +87,15 @@ async function handleSubmitWebSummerizer() {
   <div class="w-full max-w-2xl mx-auto">
 
     <section class="mt-8">
-      <h3 class="text-lg font-bold mb-4 border-b pb-2">OpenAi Web Summarizer</h3>
+      <h3 class="text-lg font-bold mb-4 border-b pb-2">Ollama Web Summarizer</h3>
 
       <p class="p-4">A web summariser tool that uses a predefined System Prompt (set in the backend) along with a User
-        Prompt. You may modify the User Prompt and experiment with different variations.</p>
+        Prompt. You may modify the User Prompt and experiment with different variations.
+      </p>
+
+      <p class="p-4">
+        Note: Getting a response for this task from the locally running Ollama may take a few minutes, depending on your machine’s speed
+      </p>
 
       <form @submit.prevent="handleSubmitWebSummerizer" class="w-full max-w-2xl mx-auto p-6 bg-white rounded shadow">
 

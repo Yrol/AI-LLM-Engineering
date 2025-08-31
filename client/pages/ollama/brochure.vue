@@ -6,7 +6,7 @@ import MarkdownRenderer from '~/components/MarkdownRenderer.vue'
 
 
 const companyName = ref('huggingface')
-const companyWebsite = ref('https://huggingface.co/')
+const companyWebsite = ref('https://huggingface.co')
 const companyNameError = ref('')
 const companyWebsiteError = ref('')
 const companyBrochureLoading = ref(false)
@@ -76,7 +76,7 @@ async function handleSubmitCompanyBrochure() {
 
     <section class="mt-8">
       <h3 class="text-lg font-bold mb-4 border-b pb-2">Ollama Brochure</h3>
-      <p class="mb-4">
+      <p class="p-4">
         Note: Getting a response for this task from the locally running Ollama may take a few minutes, depending on your machine’s speed. 
         The Hugging Face website is the most suitable option for this experiment, since summarizing other websites to obtain the expected output (e.g., in JSON format) is not guaranteed, unlike when using GPT models.
       </p>

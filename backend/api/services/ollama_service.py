@@ -30,6 +30,7 @@ class OllamaService:
             if not isinstance(stream, bool):
                 raise ValueError("Invalid or empty stream")
 
+
     def ollama_ask_anything(self, model, messages, stream, raw_data, method):
         
         self.request_validator(model, messages, stream)
@@ -86,8 +87,6 @@ class OllamaService:
             ]
         )
         
-        print(response.json)
-        
         return response.json()
     
     def get_all_details(self, url: str):
@@ -143,29 +142,37 @@ class OllamaService:
         }
         response = requests.post(self.endpoint, json=payload)
         return response.json()["message"]["content"]
-
+    
+    
+    def get_user_prompt_for_summarizer(self, website:Website):
+        user_prompt = f"You are looking at a website titled {website.title}"
+        user_prompt += "\nThe contents of this website is as follows; \
+    please provide a short summary of this website in markdown. \
+    If it includes news or announcements, then summarize these too.\n\n"
+        user_prompt += website.text
+        return user_prompt
+    
+    def messages_for(self, website:Website, system_prompt:str):
+        return [
+            {"role": "system", "content": system_prompt},
+            {"role": "user", "content": self.get_user_prompt_for_summarizer(website)},
+        ]
         
-    # def ollama_web_summerizer(self):
+    def ollama_summarise_web(self, systemInput:str, webUrl:str):
         
-    #     website = Website("https://www.bbc.com")
-    #     main_text = website.text
-    #     payload = {
-    #         "model": "tinyllama",
-    #         "messages": [
-    #             {
-    #                 "role": "system",
-    #                 "content": "You are an assistant that analyzes the contents of a website and provides a short summary, ignoring text that might be navigation related. Respond in markdown."
-    #             },
-    #             {
-    #                 "role": "user",
-    #                 "content": main_text
-    #             }
-    #         ],
-    #         "stream": False
-    #     }
-        
-    #     response = requests.post(self.endpoint, json=payload)
-    #     return response.json()
+        if not url_accessible(webUrl):
+            raise ValueError("Invalid website URL:" + webUrl)
+        if isStringEmpty(systemInput):
+            raise ValueError("Invalid or empty System Input") 
+        else:
+            website = Website(webUrl)
+            ollama_via_openai = OpenAI(base_url='http://ollama:11434/v1', api_key='ollama')
+            response = ollama_via_openai.chat.completions.create(
+                model="mistral",
+                messages=self.messages_for(website, systemInput)
+            )
+            print(response)
+            return response.choices[0].message.content
         
         
         

@@ -80,3 +80,17 @@ def ollama_create_brochure(request):
         except ValueError as ve:
             return JsonResponse({'error': str(ve)}, status=400)
     return JsonResponse({'error': 'POST required'}, status=405)
+
+@csrf_exempt
+def ollama_web_summarizer(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            systemInput = data.get('systemInput', '')
+            website = data.get('website', '')
+            return JsonResponse({'message': f'{ollamaService.ollama_summarise_web(systemInput, website)}'})
+        except ValueError as ve:
+            return JsonResponse({'error': str(ve)}, status=400)
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=400)
+    return JsonResponse({'error': 'POST required'}, status=405)
