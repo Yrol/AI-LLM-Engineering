@@ -2,16 +2,18 @@ from django.http import JsonResponse
 
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
-from .services.open_ai_service import OpenAIService
+from .services.open_ai_service import OpenAiService
+from .services.open_ai_assistant_service import OpenAiAssistantService
 from .services.ollama_service import OllamaService
 from .helper.constants import ALLOWED_METHODS, DEFAULT_METHOD
 import json
 
-openAiservice = OpenAIService()
+openAiservice = OpenAiService()
+openAiAssistantService = OpenAiAssistantService()
 ollamaService = OllamaService()
 
 @csrf_exempt
-def web_summarizer(request):
+def open_ai_web_summarizer(request):
     if request.method == 'POST':
         try:
             data = json.loads(request.body)
@@ -25,7 +27,7 @@ def web_summarizer(request):
     return JsonResponse({'error': 'POST required'}, status=405)
 
 @csrf_exempt
-def ask_anything(request):
+def open_ai_ask_anything(request):
     if request.method == 'POST':
         try:
             data = json.loads(request.body)
@@ -56,13 +58,30 @@ def ollama_chat(request):
 
 
 @csrf_exempt
-def create_brochure(request):
+def open_ai_create_brochure(request):
     if request.method == 'POST':
         try:
             data = json.loads(request.body)
             company_name = data.get('companyName', '')
             website_url = data.get('websiteUrl', '')
             return JsonResponse(openAiservice.open_ai_create_brochure(company_name, website_url), safe=False)
+        except ValueError as ve:
+            return JsonResponse({'error': str(ve)}, status=400)
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=400)
+    return JsonResponse({'error': 'POST required'}, status=405)
+
+@csrf_exempt
+def open_ai_assistant(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            if isinstance(data, list):
+                history = data
+                reply = openAiAssistantService.open_ai_assistant(history)
+            else:
+                history = []
+            return JsonResponse({"reply": reply}, safe=False)
         except ValueError as ve:
             return JsonResponse({'error': str(ve)}, status=400)
         except Exception as e:
@@ -81,7 +100,6 @@ def ollama_create_brochure(request):
             return JsonResponse({'error': str(ve)}, status=400)
     return JsonResponse({'error': 'POST required'}, status=405)
 
-@csrf_exempt
 def ollama_web_summarizer(request):
     if request.method == 'POST':
         try:

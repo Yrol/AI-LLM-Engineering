@@ -25,7 +25,7 @@ async function handleSubmitAskAnything() {
   askAnythingLoading.value = true
 
   try {
-    const res = await fetch('http://localhost:8000/api/askanything/', {
+    const res = await fetch('http://localhost:8000/api/open_ai_askanything/', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({

@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 from bs4 import BeautifulSoup
 from openai import OpenAI, AuthenticationError, OpenAIError
 
-class OpenAIService:
+class OpenAiService:
     
     def __init__(self):
         self.api_key_response = self.check_open_ai("OPENAI_API_KEY")

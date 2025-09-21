@@ -50,7 +50,7 @@ async function handleSubmitWebSummerizer() {
   webSummerizerLoading.value = true
 
   try {
-    const res = await fetch('http://localhost:8000/api/websummarizer/', {
+    const res = await fetch('http://localhost:8000/api/open_ai_websummarizer/', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
