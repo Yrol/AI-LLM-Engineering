@@ -102,7 +102,7 @@ async function handleSubmitWebSummerizer() {
           placeholder="Type your System Prompt here..." :rows="6" help="Max 500 characters" class="mb-1" />
         <div v-if="systemPromptError" class="text-red-600 text-sm mb-3">{{ systemPromptError }}</div>
 
-        <BaseTextarea id="user-prompt-textarea" :disabled="true" disa label="User Prompt"
+        <BaseTextarea id="user-prompt-textarea" :disabled="true" label="User Prompt"
           v-model="webSummerizerUserPrompt" placeholder="Type your User Prompt here..." :rows="6"
           help="Max 500 characters" class="mb-1" />
         <div v-if="userPromptError" class="text-red-600 text-sm mb-3">{{ userPromptError }}</div>

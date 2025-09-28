@@ -76,9 +76,10 @@ def open_ai_assistant(request):
     if request.method == 'POST':
         try:
             data = json.loads(request.body)
-            if isinstance(data, list):
-                history = data
-                reply = openAiAssistantService.open_ai_assistant(history)
+            history = data.get('messages','')
+            prompt = data.get('prompt','')
+            if isinstance(history, list):
+                reply = openAiAssistantService.open_ai_assistant(history, prompt)
             else:
                 history = []
             return JsonResponse({"reply": reply}, safe=False)

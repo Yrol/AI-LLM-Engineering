@@ -1,15 +1,12 @@
-import os
 import json
 from ..helper.website import Website
-from ..helper.validators import url_accessible, isStringEmpty
-from dotenv import load_dotenv
-from bs4 import BeautifulSoup
-from openai import OpenAI, AuthenticationError, OpenAIError
+from ..helper.validators import url_accessible, isStringEmpty, check_open_ai
+from openai import OpenAI
 
 class OpenAiService:
     
     def __init__(self):
-        self.api_key_response = self.check_open_ai("OPENAI_API_KEY")
+        self.api_key_response = check_open_ai("OPENAI_API_KEY")
         self.model = "gpt-4o-mini"
         self.openai = OpenAI()
 
@@ -133,27 +130,4 @@ class OpenAiService:
             {"role": "system", "content": system_prompt},
             {"role": "user", "content": self.get_user_prompt_for_summarizer(website)},
         ]
-
-
-    def check_open_ai(self, keyName:str):
-        load_dotenv(override=True)
-        api_key = os.getenv(keyName)
-
-        if not api_key:
-            return "No API key was found - please head over to the troubleshooting notebook in this folder to identify & fix!"
-        elif not api_key.startswith("sk-proj-"):
-            return "An API key was found, but it doesn't start sk-proj-; please check you're using the right key - see troubleshooting notebook"
-        elif api_key.strip() != api_key:
-            return "An API key was found, but it looks like it might have space or tab characters at the start or end - please remove them - see troubleshooting notebook"
-
-        try:
-            client = OpenAI(api_key=api_key)
-            client.models.list()
-            return True
-        except AuthenticationError:
-            return "API key is invalid or unauthorized."
-        except OpenAIError as e:
-            return f"API key check failed due to an OpenAI error: {str(e)}"
-        except Exception as e:
-            return f"Unexpected error while checking API key: {str(e)}"
     
