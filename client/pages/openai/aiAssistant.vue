@@ -4,6 +4,7 @@ import BaseTextarea from '~/components/BaseTextarea.vue'
 import { ref } from 'vue';
 
 const userPromptErrorGeneric = ref('')
+const userPromptErrorSpecific = ref('')
 const userPromptAiAssistantGeneric = ref('You are a helpful assistant')
 const userPromptAiAssistantSpecific = ref(`You are a helpful assistant in a clothes store. You should try to gently encourage
 the customer to try items that are on sale. Hats are 60% off, and most other items are 50% off.
