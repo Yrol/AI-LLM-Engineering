@@ -2,7 +2,7 @@ from ..helper.validators import check_open_ai
 from openai import OpenAI
 
 class OpenAiAssistantService:
-    
+        
     def __init__(self):
         self.api_key_response = check_open_ai("OPENAI_API_KEY")
         self.model = "gpt-4o-mini"

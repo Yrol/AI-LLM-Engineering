@@ -125,6 +125,7 @@ async function handleAiAssistantSendMessageSpecific(message) {
     <section class="mt-8">
       <h3 class="text-lg font-bold mb-4 border-b pb-2">OpenAI Assistant Experiment</h3>
       <h4 class="text-lg font-bold">OpenAI Assistant - Generic</h4>
+      <p>Using a generic user prompt to query Open AI</p>
 
       <BaseTextarea id="user-prompt-textarea" :disabled="true" label="User Prompt generic"
           v-model="userPromptAiAssistantGeneric" :rows="1"
@@ -142,6 +143,8 @@ async function handleAiAssistantSendMessageSpecific(message) {
 
     <section class="mt-8 mb-8">
       <h4 class="text-lg font-bold">OpenAI Assistant - Specific</h4>
+      <p>Using a specific user prompt to query Open AI</p>
+      <p><strong>Note:</strong> Although the prompt includes ‘hats’, both hats and caps are disabled through a system message in the backend (check the code).</p>
       <BaseTextarea id="user-prompt-textarea" :disabled="false" label="User Prompt specific"
           v-model="userPromptAiAssistantSpecific" :rows="5"
           help="Max 500 characters" class="mb-1" />

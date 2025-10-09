@@ -15,6 +15,7 @@
             <NuxtLink to="/openai/websummeriser" class="text-base text-blue-600 hover:underline text-left">Web summerizer</NuxtLink>
             <NuxtLink to="/openai/brochure" class="text-base text-blue-600 hover:underline text-left">Brochure</NuxtLink>
             <NuxtLink to="/openai/aiAssistant" class="text-base text-blue-600 hover:underline text-left">AI Assistant</NuxtLink>
+            <NuxtLink to="/openai/aiAssistantTicketing" class="text-base text-blue-600 hover:underline text-left">Ticketing AI Assistant</NuxtLink>
           </div>
         </div>
         <NuxtLink to="/ollama/ollama" class="text-lg text-blue-700 hover:underline font-medium text-left mt-2">Ollama</NuxtLink>

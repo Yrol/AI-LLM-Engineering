@@ -4,12 +4,14 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from .services.open_ai_service import OpenAiService
 from .services.open_ai_assistant_service import OpenAiAssistantService
+from .services.open_ai_ticketing_assistant_service import OpenAiTicketingAssistantService
 from .services.ollama_service import OllamaService
 from .helper.constants import ALLOWED_METHODS, DEFAULT_METHOD
 import json
 
 openAiservice = OpenAiService()
 openAiAssistantService = OpenAiAssistantService()
+openAiTicketingAssistantService = OpenAiTicketingAssistantService()
 ollamaService = OllamaService()
 
 @csrf_exempt
@@ -88,6 +90,26 @@ def open_ai_assistant(request):
         except Exception as e:
             return JsonResponse({'error': str(e)}, status=400)
     return JsonResponse({'error': 'POST required'}, status=405)
+
+
+@csrf_exempt
+def open_ai_ticketing_assistant(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            history = data.get('messages','')
+            prompt = data.get('prompt','')
+            if isinstance(history, list):
+                reply = openAiTicketingAssistantService.open_ai_ticketing_assistant(history, prompt)
+            else:
+                history = []
+            return JsonResponse({"reply": reply}, safe=False)
+        except ValueError as ve:
+            return JsonResponse({'error': str(ve)}, status=400)
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=400)
+    return JsonResponse({'error': 'POST required'}, status=405)
+
 
 @csrf_exempt
 def ollama_create_brochure(request):
