@@ -19,8 +19,8 @@ const currentUser = {
 
 const loading = ref(false)
 
-function updateAiAssistantMessageGeneric(message) {
-  messagesAiAssistantGeneric.value.push({ text: message, sender: 'assistant', created_at: new Date() });
+function updateAiAssistantMessageGeneric(message, image) {
+  messagesAiAssistantGeneric.value.push({ text: message, image_base64: image, sender: 'assistant', created_at: new Date() });
 }
 
 async function handleAiAssistantSendMessageGeneric(message) {
@@ -55,7 +55,7 @@ async function handleAiAssistantSendMessageGeneric(message) {
   })
     .then(response => response.json())
     .then(data => {
-      updateAiAssistantMessageGeneric(data.reply)
+      updateAiAssistantMessageGeneric(data.reply.message, data.reply.image_base64 || null)
     })
     .catch(error => {
       console.error("Error:", error);

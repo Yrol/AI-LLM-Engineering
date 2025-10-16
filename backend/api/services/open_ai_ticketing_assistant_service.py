@@ -1,6 +1,8 @@
 from ..helper.validators import check_open_ai
 from openai import OpenAI
-import json
+import json, re, base64
+from io import BytesIO
+from PIL import Image
 
 class OpenAiTicketingAssistantService:
     '''
@@ -46,17 +48,34 @@ class OpenAiTicketingAssistantService:
                 tools=self.tools
             )
             
+            image_base64 = None
+            
+            # check if the model wants to call the tool for further information
             if response.choices[0].finish_reason=="tool_calls":
                 message = response.choices[0].message
                 response, city = self.handle_tool_call(message)
+                
+                content_dict = json.loads(response['content'])
+                price = content_dict.get('price')
+                if self.isPriceReturned(price):
+                    image = self.artist(city)
+                    # Convert the PIL image to base64 string
+                    buffered = BytesIO()
+                    image.save(buffered, format="PNG")
+                    image_base64 = base64.b64encode(buffered.getvalue()).decode("utf-8")
+
                 messages.append(message)
                 messages.append(response)
                 response = self.openai.chat.completions.create(model=self.model, messages=messages)
                 
             print(response.choices[0].message.content)
-            return response.choices[0].message.content
+            reply = response.choices[0].message.content
+            return {
+                "message": reply,
+                "image_base64": image_base64
+            }
         
-    def get_ticket_price(self, destination_city):
+    def get_ticket_price(self, destination_city:str):
         print(f"Tool get_ticket_price called for {destination_city}")
         city = destination_city.lower()
         return self.ticket_prices.get(city, "Unknown")
@@ -82,3 +101,31 @@ class OpenAiTicketingAssistantService:
         }
         return response, city
     
+    
+    def artist(self,city:str):
+        image_response = self.openai.images.generate(
+                model="dall-e-2",
+                prompt=f"An image representing a vacation in {city}, showing tourist spots and everything unique about {city}, in a vibrant pop-art style",
+                size="1024x1024",
+                n=1,
+                response_format="b64_json",
+            )
+        image_base64 = image_response.data[0].b64_json
+        image_data = base64.b64decode(image_base64)
+        return Image.open(BytesIO(image_data))
+    
+    
+    def isPriceReturned(self, price:str) -> bool:
+        if not isinstance(price, str):
+            return False
+
+        price = price.strip()
+
+        if price.lower() == "unknown":
+            return False
+        
+        # Flexible dollar price pattern
+        dollar_pattern = re.compile(r"^\$\s*\d[\d,]*(?:\.\d{1,2})?$")
+
+        match = bool(dollar_pattern.match(price))
+        return match
