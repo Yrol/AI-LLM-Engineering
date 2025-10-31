@@ -6,6 +6,7 @@ from .services.open_ai_service import OpenAiService
 from .services.open_ai_assistant_service import OpenAiAssistantService
 from .services.open_ai_ticketing_assistant_service import OpenAiTicketingAssistantService
 from .services.ollama_service import OllamaService
+from .services.hugging_face_pipeline_service import HuggingFacePipelineService
 from .helper.constants import ALLOWED_METHODS, DEFAULT_METHOD
 import json
 
@@ -13,6 +14,7 @@ openAiservice = OpenAiService()
 openAiAssistantService = OpenAiAssistantService()
 openAiTicketingAssistantService = OpenAiTicketingAssistantService()
 ollamaService = OllamaService()
+huggingFaceService = HuggingFacePipelineService()
 
 @csrf_exempt
 def open_ai_web_summarizer(request):
@@ -123,6 +125,7 @@ def ollama_create_brochure(request):
             return JsonResponse({'error': str(ve)}, status=400)
     return JsonResponse({'error': 'POST required'}, status=405)
 
+@csrf_exempt
 def ollama_web_summarizer(request):
     if request.method == 'POST':
         try:
@@ -130,6 +133,33 @@ def ollama_web_summarizer(request):
             systemInput = data.get('systemInput', '')
             website = data.get('website', '')
             return JsonResponse({'message': f'{ollamaService.ollama_summarise_web(systemInput, website)}'})
+        except ValueError as ve:
+            return JsonResponse({'error': str(ve)}, status=400)
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=400)
+    return JsonResponse({'error': 'POST required'}, status=405)
+
+@csrf_exempt
+def huggingface_named_entity_analysis(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            prompt = data.get('prompt', '')
+            return JsonResponse({'message': f'{huggingFaceService.named_entity_analysis(prompt)}'})
+        except ValueError as ve:
+            return JsonResponse({'error': str(ve)}, status=400)
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=400)
+    return JsonResponse({'error': 'POST required'}, status=405)
+
+
+@csrf_exempt
+def huggingface_sentiment_analysis(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            prompt = data.get('prompt', '')
+            return JsonResponse({'message': f'{huggingFaceService.sentiment_analysis(prompt)}'})
         except ValueError as ve:
             return JsonResponse({'error': str(ve)}, status=400)
         except Exception as e:

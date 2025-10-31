@@ -11,3 +11,5 @@ openai
 json-repair
 Pillow
 imageio
+torch
+transformers

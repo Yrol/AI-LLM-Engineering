@@ -18,11 +18,20 @@
             <NuxtLink to="/openai/aiAssistantTicketing" class="text-base text-blue-600 hover:underline text-left">Ticketing AI Assistant</NuxtLink>
           </div>
         </div>
-        <NuxtLink to="/ollama/ollama" class="text-lg text-blue-700 hover:underline font-medium text-left mt-2">Ollama</NuxtLink>
-        <div class="pl-4 flex flex-col gap-1 mt-1">
-            <NuxtLink to="/ollama/askanything" class="text-base text-blue-600 hover:underline text-left">Ask anything</NuxtLink>
-            <NuxtLink to="/ollama/brochure" class="text-base text-blue-600 hover:underline text-left">Brochure</NuxtLink>
-            <NuxtLink to="/ollama/websummeriser" class="text-base text-blue-600 hover:underline text-left">Web summerizer</NuxtLink>
+        <div>
+          <NuxtLink to="/ollama/ollama" class="text-lg text-blue-700 hover:underline font-medium text-left mt-2">Ollama</NuxtLink>
+          <div class="pl-4 flex flex-col gap-1 mt-1">
+              <NuxtLink to="/ollama/askanything" class="text-base text-blue-600 hover:underline text-left">Ask anything</NuxtLink>
+              <NuxtLink to="/ollama/brochure" class="text-base text-blue-600 hover:underline text-left">Brochure</NuxtLink>
+              <NuxtLink to="/ollama/websummeriser" class="text-base text-blue-600 hover:underline text-left">Web summerizer</NuxtLink>
+          </div>
+        </div>
+        <div>
+          <NuxtLink to="/huggingface/huggingface" class="text-lg text-blue-700 hover:underline font-medium text-left mt-2">Hugging Face</NuxtLink>
+          <div class="pl-4 flex flex-col gap-1 mt-1">
+              <NuxtLink to="/huggingface/named_entity_analysis" class="text-base text-blue-600 hover:underline text-left">Named Entity Analysis</NuxtLink>
+              <NuxtLink to="/huggingface/sentiment_analysis" class="text-base text-blue-600 hover:underline text-left">Sentiment Analysis</NuxtLink>
+          </div>
         </div>
       </nav>
       <!-- Page Content -->
