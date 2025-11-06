@@ -31,6 +31,8 @@
           <div class="pl-4 flex flex-col gap-1 mt-1">
               <NuxtLink to="/huggingface/named_entity_analysis" class="text-base text-blue-600 hover:underline text-left">Named Entity Analysis</NuxtLink>
               <NuxtLink to="/huggingface/sentiment_analysis" class="text-base text-blue-600 hover:underline text-left">Sentiment Analysis</NuxtLink>
+              <NuxtLink to="/huggingface/question_answering" class="text-base text-blue-600 hover:underline text-left">Question Answering</NuxtLink>
+              <NuxtLink to="/huggingface/translation" class="text-base text-blue-600 hover:underline text-left">Translation</NuxtLink>
           </div>
         </div>
       </nav>

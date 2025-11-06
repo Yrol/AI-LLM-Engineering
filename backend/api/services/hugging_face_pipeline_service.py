@@ -1,5 +1,6 @@
 import torch
 from transformers import pipeline
+import sentencepiece
 
 class HuggingFacePipelineService:
     
@@ -14,4 +15,25 @@ class HuggingFacePipelineService:
     def sentiment_analysis(self, prompt:str):
         classifier = pipeline("sentiment-analysis", device=-1 if self.device == "cpu" else 0)
         return classifier(prompt)
+    
+    def question_answering(self, question:str, context:str):
+        question_answerer = pipeline("question-answering", device=-1 if self.device == "cpu" else 0)
+        return question_answerer(question=question, context=context)
+    
+    def translator(self, translation_type:str, text:str):
         
+        device_id = -1 if self.device == "cpu" else 0
+
+        if translation_type == "translation_en_to_es":
+            translator = pipeline(
+                "translation_en_to_es",
+                model="Helsinki-NLP/opus-mt-en-es",
+                device=0  # force GPU here, or -1 for CPU if needed
+            )
+        else:
+            translator = pipeline(
+                translation_type,
+                device=device_id
+        )
+            
+        return translator(text)

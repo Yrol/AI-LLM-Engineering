@@ -3,16 +3,26 @@ import { ref } from 'vue'
 import BaseTextarea from '~/components/BaseTextarea.vue'
 import LoadingButton from '~/components/LoadingButton.vue'
 import JsonViewer from '~/components/JsonViewer.vue'
+import SelectInput from '~/components/SelectInput.vue'
 
 
-const prompt = ref('Barack Obama was the 44th president of the United States.')
+const prompt = ref('Hugging Face Pipelines are high-level, user-friendly abstractions provided by the Hugging Face Transformers library. They simplify the process of using pre-trained machine learning models for a variety of common tasks across different modalities like natural language processing, computer vision, and audio')
 const promptError = ref('')
 const loading = ref(false)
 const responseMessage = ref('')
 const errorMessage = ref('')
 
+const options = [
+  { label: 'English to French', value: 'translation_en_to_fr' },
+  { label: 'English to Spanish', value: 'translation_en_to_es' },
+]
+
+const selectedValue = ref(options[0].value)
+
 async function handleSubmit() {
   promptError.value = ''
+  responseMessage.value = ''
+  errorMessage.value = ''
 
   let valid = true
   if (!prompt.value.trim()) {
@@ -25,11 +35,12 @@ async function handleSubmit() {
   loading.value = true
 
   try {
-    const res = await fetch('http://localhost:8000/api/huggingface_named_entity_analysis/', {
+    const res = await fetch('http://localhost:8000/api/huggingface_translator/', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        prompt: prompt.value,
+        text: prompt.value,
+        translation_type: selectedValue.value
       })
     })
 
@@ -59,10 +70,18 @@ async function handleSubmit() {
   <div class="w-full max-w-2xl mx-auto">
 
     <section class="mt-8">
-      <h3 class="text-lg font-bold mb-4 border-b pb-2">Named Entity Analysis</h3>
+      <h3 class="text-lg font-bold mb-4 border-b pb-2">Question answering</h3>
       <form @submit.prevent="handleSubmit" class="w-full max-w-2xl mx-auto p-6 bg-white rounded shadow">
 
-        <BaseTextarea id="prompt-textarea" label="Prompt" v-model="prompt"
+        <SelectInput
+            class="mb-2"
+            label="Translation type"
+            v-model="selectedValue"
+            placeholder="Select an option"
+            :options="options"
+        />
+
+        <BaseTextarea id="prompt-textarea" label="Text to translate" v-model="prompt"
           placeholder="Type your prompt here..." :rows="6" help="Max 500 characters" class="mb-1" />
         <div v-if="promptError" class="text-red-600 text-sm mb-3">{{ promptError }}</div>
 
@@ -72,7 +91,9 @@ async function handleSubmit() {
           </template>
           Send
         </LoadingButton>
+
         <JsonViewer class="mt-4" :data="responseMessage" />
+
         <div v-if="errorMessage" class="mt-4 text-red-600">
           {{ errorMessage }}
         </div>
