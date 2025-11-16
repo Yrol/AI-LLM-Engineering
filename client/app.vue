@@ -33,6 +33,8 @@
               <NuxtLink to="/huggingface/sentiment_analysis" class="text-base text-blue-600 hover:underline text-left">Sentiment Analysis</NuxtLink>
               <NuxtLink to="/huggingface/question_answering" class="text-base text-blue-600 hover:underline text-left">Question Answering</NuxtLink>
               <NuxtLink to="/huggingface/translation" class="text-base text-blue-600 hover:underline text-left">Translation</NuxtLink>
+              <NuxtLink to="/huggingface/classification" class="text-base text-blue-600 hover:underline text-left">Classification</NuxtLink>
+              <NuxtLink to="/huggingface/text_generation" class="text-base text-blue-600 hover:underline text-left">Text Generation</NuxtLink>
           </div>
         </div>
       </nav>

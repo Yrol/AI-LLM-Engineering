@@ -35,5 +35,12 @@ class HuggingFacePipelineService:
                 translation_type,
                 device=device_id
         )
-            
         return translator(text)
+    
+    def classification(self, classificationText:str):
+        classifier = pipeline("zero-shot-classification", device=-1 if self.device == "cpu" else 0)
+        return classifier(classificationText, candidate_labels=["technology", "sports", "politics"])
+    
+    def text_generation(self, inputText:str):
+        text_generation = pipeline("text-generation", device=-1 if self.device == "cpu" else 0)
+        return text_generation(inputText)

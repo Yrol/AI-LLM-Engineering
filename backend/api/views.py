@@ -193,3 +193,31 @@ def huggingface_translator(request):
         except Exception as e:
             return JsonResponse({'error': str(e)}, status=400)
     return JsonResponse({'error': 'POST required'}, status=405)
+
+
+@csrf_exempt
+def huggingface_classification(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            classification_text = data.get('classification_text', '')
+            return JsonResponse({'message': f'{huggingFaceService.classification(classification_text)}'})
+        except ValueError as ve:
+            return JsonResponse({'error': str(ve)}, status=400)
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=400)
+    return JsonResponse({'error': 'POST required'}, status=405)
+
+
+@csrf_exempt
+def huggingface_text_generation(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            inputText = data.get('input_text', '')
+            return JsonResponse({'message': f'{huggingFaceService.text_generation(inputText)}'})
+        except ValueError as ve:
+            return JsonResponse({'error': str(ve)}, status=400)
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=400)
+    return JsonResponse({'error': 'POST required'}, status=405)

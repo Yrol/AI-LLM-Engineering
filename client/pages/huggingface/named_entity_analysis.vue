@@ -13,6 +13,7 @@ const errorMessage = ref('')
 
 async function handleSubmit() {
   promptError.value = ''
+  responseMessage.value = ''
 
   let valid = true
   if (!prompt.value.trim()) {

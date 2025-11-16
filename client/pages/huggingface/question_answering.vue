@@ -16,6 +16,7 @@ const errorMessage = ref('')
 async function handleSubmit() {
   contextError.value = ''
   questionError.value = ''
+  responseMessage.value = ''
 
   let valid = true
 
@@ -34,7 +35,7 @@ async function handleSubmit() {
   loading.value = true
 
   try {
-const res = await fetch('http://localhost:8000/api/huggingface_question_answering/', {
+      const res = await fetch('http://localhost:8000/api/huggingface_question_answering/', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
