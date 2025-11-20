@@ -8,8 +8,20 @@ An experimental project featuring both backend and frontend functionality to int
     - Web summarizer (supports user and system prompts) - cloud based
     - Generic chat capabilities querying via API calls - cloud based
     - Brochure generator - creates a brochure for a given website - cloud based
+    - AI shop assistant
+    - AI ticketing agent
 - **Ollama (TinyLlama)**
     - Generic chat capabilities querying via API calls - local LLM
+    - Brochure generator
+    - Web summarizer
+
+- **Hugging Face (Pipelines)**
+    - Named Entity Analysis
+    - Sentiment Analysis
+    - Question Answering
+    - Translation
+    - Text classification
+    - Text Generation
 
 ### Prerequisites
 - **Docker** installed on the local system

@@ -70,7 +70,7 @@ async function handleSubmit() {
   <div class="w-full max-w-2xl mx-auto">
 
     <section class="mt-8">
-      <h3 class="text-lg font-bold mb-4 border-b pb-2">Question answering</h3>
+      <h3 class="text-lg font-bold mb-4 border-b pb-2">Translation</h3>
       <form @submit.prevent="handleSubmit" class="w-full max-w-2xl mx-auto p-6 bg-white rounded shadow">
 
         <SelectInput

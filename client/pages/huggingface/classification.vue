@@ -57,26 +57,24 @@ const res = await fetch('http://localhost:8000/api/huggingface_classification/',
 
 <template>
   <div class="w-full max-w-2xl mx-auto">
-
     <div class="w-full max-w-2xl mx-auto">
-
         <section class="mt-8">
-        <!-- Current capabilities -->
-        <div class="bg-white shadow-md rounded-lg p-6">
-            <h3 class="text-lg font-bold mb-4 border-b pb-2">Text classification</h3>
-            <p>
-                The following classifiers have been defined in the backing.
-            </p>
-            <ul class="space-y-4">
-                <li>
-                    <ul class="list-disc list-inside pl-4 mt-1 space-y-1 text-gray-700">
-                    <li>Technology</li>
-                    <li>Sports</li>
-                    <li>Politics</li>
-                    </ul>
-                </li>
-            </ul>
-        </div>
+          <!-- Current capabilities -->
+          <div class="bg-white shadow-md rounded-lg p-6">
+              <h3 class="text-lg font-bold mb-4 border-b pb-2">Text classification</h3>
+              <p>
+                  The following classifiers have been defined in the backend for classification.
+              </p>
+              <ul class="space-y-4">
+                  <li>
+                      <ul class="list-disc list-inside pl-4 mt-1 space-y-1 text-gray-700">
+                      <li>Technology</li>
+                      <li>Sports</li>
+                      <li>Politics</li>
+                      </ul>
+                  </li>
+              </ul>
+          </div>
         </section>
     </div>
 

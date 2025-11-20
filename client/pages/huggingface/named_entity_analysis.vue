@@ -58,9 +58,21 @@ async function handleSubmit() {
 
 <template>
   <div class="w-full max-w-2xl mx-auto">
+        <div class="w-full max-w-2xl mx-auto">
+        <section class="mt-8">
+          <!-- Current capabilities -->
+          <div class="bg-white shadow-md rounded-lg p-6">
+              <h3 class="text-lg font-bold mb-4 border-b pb-2">Named Entity Analysis</h3>
+              <p>
+                  bert-base-NER is a fine-tuned BERT model that is ready to use for Named Entity 
+                  Recognition and achieves state-of-the-art performance for the NER task. It has been trained to 
+                  recognize four types of entities: location (LOC), organizations (ORG), person (PER) and Miscellaneous (MISC).
+              </p>
+          </div>
+        </section>
+    </div>
 
     <section class="mt-8">
-      <h3 class="text-lg font-bold mb-4 border-b pb-2">Named Entity Analysis</h3>
       <form @submit.prevent="handleSubmit" class="w-full max-w-2xl mx-auto p-6 bg-white rounded shadow">
 
         <BaseTextarea id="prompt-textarea" label="Prompt" v-model="prompt"
